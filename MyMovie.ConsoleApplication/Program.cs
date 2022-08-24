@@ -1,9 +1,6 @@
-﻿using ConsoleTables;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyMovies.Entities;
 using MyMovies.Repositories.Api.Extensions;
-using MyMovies.Repositories.Interfaces;
 using MyMovies.Services;
 
 namespace MyMovie.ConsoleApplication
@@ -17,17 +14,17 @@ namespace MyMovie.ConsoleApplication
                 .AddJsonFile("appsettings.json", true)
                 .Build();
 
-            var conteudoBaldinho = new ServiceCollection();
+            var serviceCollection = new ServiceCollection();
 
-            conteudoBaldinho
+            serviceCollection
                 .AddSingleton(configuration)
                 .AddServices()
                 .AddApiRepository()
                 .AddSingleton<Program>();
 
-            var baldinho = conteudoBaldinho.BuildServiceProvider();
+            var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var program = baldinho?.GetService<Program>();
+            var program = serviceProvider?.GetService<Program>();
 
             program?.Execute();
         }
