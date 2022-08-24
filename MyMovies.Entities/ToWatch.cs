@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyMovies.Entities
@@ -7,7 +8,7 @@ namespace MyMovies.Entities
     public class ToWatch : Movie
     {
         [MaxLength(150)]
-
-        public string Reason { get; set; }
+        [Display(Name = "Motivo", Order = 2)]
+        public string? Reason { get; set; }
     }
 }

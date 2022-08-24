@@ -1,5 +1,4 @@
 ﻿using MyMovies.Entities;
-using System.Linq.Expressions;
 
 namespace MyMovies.Repositories.Interfaces
 {
@@ -12,8 +11,5 @@ namespace MyMovies.Repositories.Interfaces
         List<T> ReadAll();
         T Update(T model);
         void Delete(long id); 
-
-        //crud
-
     }
 }

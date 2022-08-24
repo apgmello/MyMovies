@@ -21,7 +21,7 @@ namespace MyMovies.Repositories.Database.Context
               .Property<DateTime>("Date");
         }
 
-        public DbSet<ToWatch> ToWatch { get; set; }
-        public DbSet<Watched> Watched { get; set; }
+        public DbSet<ToWatch>? ToWatch { get; set; }
+        public DbSet<Watched>? Watched { get; set; }
     }
 }

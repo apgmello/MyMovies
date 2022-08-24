@@ -39,7 +39,8 @@ namespace MyMovies.Api.Controllers
         [HttpPut]
         public T Put(long id, T entity)
         {
-            typeof(T).GetProperty("Id")?.SetValue(entity, id, null);
+            //seta a propriedade Id por reflection pois vem vazia e é read-only
+            typeof(T).BaseType.GetProperty("Id")?.SetValue(entity, id, null);
             return repository.Update(entity);
         }
 

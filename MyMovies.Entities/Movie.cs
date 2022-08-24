@@ -6,14 +6,17 @@ namespace MyMovies.Entities
 {
     public abstract class Movie
     {
-
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonProperty]        
+        [JsonProperty]
+        [Display(Name = "Id",AutoGenerateField = true)]
         public long Id { get; private set; }
+
+
         [Required]
         [MaxLength(50)]
-        public string Title { get; set; }
+        [Display(Name = "Título", Order = 1)]
+        public string? Title { get; set; }
     }
 }

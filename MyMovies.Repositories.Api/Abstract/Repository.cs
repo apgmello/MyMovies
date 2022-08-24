@@ -38,13 +38,13 @@ namespace MyMovies.Repositories.Api.Abstract
 
         public void Delete(long id)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"{url}/{id}");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"{url}?id={id}");
             _ = Request<TMovie>(requestMessage).Result;
         }
 
         public TMovie Read(long id)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}/{id}");
+            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}?id={id}");
             return Request<TMovie>(requestMessage).Result;
         }
 
@@ -62,7 +62,7 @@ namespace MyMovies.Repositories.Api.Abstract
 
         public TMovie Update(TMovie model)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{url}/{model.Id}")
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{url}?id={model.Id}")
             {
                 Content = JsonContent.Create(model)
             };

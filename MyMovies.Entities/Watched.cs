@@ -6,10 +6,14 @@ namespace MyMovies.Entities
     [Table("watched")]
     public class Watched : Movie
     {
+        DateTime date = DateTime.Now;
+        
         [MaxLength(150)]
-        public string Comment { get; set; }
+        [Display(Name = "O que achou", Order = 2)]
+        public string? Comment { get; set; }
         
         [Required]
-        public DateTime Date { get; set; }
+        [Display(Name = "Data", Order = 3, Prompt = "dd/mm/aaaa")]
+        public DateTime Date { get { return date; } set { date = value; } }
     }
 }

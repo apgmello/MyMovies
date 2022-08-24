@@ -32,10 +32,8 @@ namespace MyMovie.ConsoleApplication
             program?.Execute();
         }
 
-        private readonly IRepository<Watched> watchedRepository;
-        private readonly IRepository<ToWatch> toWatchRepository;
         private readonly MenuService menuService;
-
+        
         public Program(MenuService menuService)
         {
             this.menuService = menuService;
