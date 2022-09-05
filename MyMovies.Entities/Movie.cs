@@ -10,7 +10,6 @@ namespace MyMovies.Entities
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonProperty]
-        [Display(Name = "Id",AutoGenerateField = true)]
         public long Id { get; private set; }
 
 

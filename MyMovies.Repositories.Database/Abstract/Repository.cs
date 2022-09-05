@@ -51,9 +51,9 @@ namespace MyMovies.Repositories.Database.Abstract
             return Read(x => x.Title.ToLower().Contains(title.ToLower()));
         }
 
-        public T Update(T model)
+        public T Update(T entity)
         {
-            var ret = context.Update(model).Entity;
+            var ret = context.Update(entity).Entity;
             context.SaveChanges();
             return ret;
         }

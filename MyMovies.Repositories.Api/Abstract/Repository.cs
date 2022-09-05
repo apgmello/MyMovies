@@ -12,7 +12,7 @@ namespace MyMovies.Repositories.Api.Abstract
         private readonly string url;
         private readonly HttpClient httpClient;
 
-        public Repository(IConfigurationRoot configuration)
+        public Repository(IConfigurationRoot configuration)//vem de dentro do container IConfigurationRoot
         {
             url = configuration["moviesApiURL"];
             url = $"{url}/{typeof(TMovie).Name}";
@@ -22,15 +22,17 @@ namespace MyMovies.Repositories.Api.Abstract
         {
             var response = await httpClient.SendAsync(requestMessage);
             var message = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<T>(message);
+            T result = default;
+            if(message != null)
+                result = JsonConvert.DeserializeObject<T>(message);
             return result;
         }
 
-        public TMovie Create(TMovie model)
+        public TMovie Create(TMovie entity)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
             {
-                Content = JsonContent.Create(model)
+                Content = JsonContent.Create(entity)
             };
 
             return Request<TMovie>(requestMessage).Result;
@@ -60,11 +62,11 @@ namespace MyMovies.Repositories.Api.Abstract
             return Request<List<TMovie>>(requestMessage).Result;
         }
 
-        public TMovie Update(TMovie model)
+        public TMovie Update(TMovie entity)
         {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{url}?id={model.Id}")
+            var requestMessage = new HttpRequestMessage(HttpMethod.Put, $"{url}?id={entity.Id}")
             {
-                Content = JsonContent.Create(model)
+                Content = JsonContent.Create(entity)
             };
 
             return Request<TMovie>(requestMessage).Result;

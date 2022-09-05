@@ -5,7 +5,8 @@ using MyMovies.Repositories.Interfaces;
 
 namespace MyMovies.Api.Controllers
 {
-
+    [ApiController]
+    [Route("[controller]")]
     public abstract class BaseController<T> : Controller
         where T : Movie
     {

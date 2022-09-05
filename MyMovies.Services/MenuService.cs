@@ -112,8 +112,7 @@ namespace MyMovies.Services
             where T : Movie
         {
             Console.Clear();
-            Console.Write("Digite o título ou uma parte: ");
-            var title = Console.ReadLine();
+            var title = Prompt.Input<string>("Digite o título ou uma parte", validators: new[] { Validators.Required("Valor obrigatório!")});
 
             var movies = repository.Search(title);
 

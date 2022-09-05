@@ -16,6 +16,8 @@ namespace MyMovie.ConsoleApplication
 
             var serviceCollection = new ServiceCollection();
 
+
+
             serviceCollection
                 .AddSingleton(configuration)
                 .AddServices()
