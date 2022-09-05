@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MyMovies.Api.Extensions;
 using MyMovies.Repositories.Database.Context;
 using MyMovies.Repositories.Database.Extensions;
 
@@ -8,8 +9,6 @@ namespace MyMovies.Api
     {
         public static void Main(string[] args)
         {
-
-
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -20,6 +19,7 @@ namespace MyMovies.Api
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<SQLiteContext>(); //*registre contexto
             builder.Services.AddDatabaseRepository();
+            builder.Services.AddEventLogger();
 
             var app = builder.Build();
 

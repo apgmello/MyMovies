@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyMovies.Api.Filters;
 using MyMovies.Entities;
 using MyMovies.Repositories.Database.Interfaces;
 using MyMovies.Repositories.Interfaces;
@@ -38,6 +39,7 @@ namespace MyMovies.Api.Controllers
         }
 
         [HttpPut]
+        [CustomActionFilterEndpoint("Put")]
         public T Put(long id, T entity)
         {
             //seta a propriedade Id por reflection pois vem vazia e é read-only
@@ -46,12 +48,14 @@ namespace MyMovies.Api.Controllers
         }
 
         [HttpPost]
+        [CustomActionFilterEndpoint("Post")]
         public T Post(T entity)
         {
             return repository.Create(entity);
         }
 
         [HttpDelete]
+        [CustomActionFilterEndpoint("Delete")]
         public void Delete(long id)
         {
             repository.Delete(id);
