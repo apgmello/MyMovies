@@ -20,6 +20,7 @@ namespace MyMovies.Services
 
         public void InitializeMenu()
         {
+            
             var menu = new ConsoleMenu()
                   .Add("Filmes para assistir", () => SubMenu<ToWatch>("Filmes para assistir", _toWatchRepositoryApi))
                   .Add("Filmes assistidos", () => SubMenu<Watched>("Filmes assistidos", _watchedRepositoryApi))
@@ -34,7 +35,7 @@ namespace MyMovies.Services
         {
             var menu = new ConsoleMenu()
                 .Add("Listar", () => List(repository))
-                .Add("Buscar", () => Saerch(repository))
+                .Add("Buscar", () => Search(repository))
                 .Add("Adicionar", () => AddMovie(repository))
                 .Add("Remover", () => RemoveMovie(repository))
                 .Add("Alterar", () => ChangeMovie(repository))
@@ -108,13 +109,13 @@ namespace MyMovies.Services
             movie = Prompt.Bind(movie);
             repository.Update(movie);
         }
-        public void Saerch<T>(IRepository<T> repository)
+        public void Search<T>(IRepository<T> repository)
             where T : Movie
         {
             Console.Clear();
             var title = Prompt.Input<string>("Digite o título ou uma parte", validators: new[] { Validators.Required("Valor obrigatório!")});
 
-            var movies = repository.Search(title);
+            var movies =  repository.Search(null);
 
             if (movies.Count == 0)
             {

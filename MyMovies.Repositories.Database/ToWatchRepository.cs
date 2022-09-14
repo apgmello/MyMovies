@@ -10,5 +10,10 @@ namespace MyMovies.Repositories.Database
         public ToWatchRepository(SQLiteContext context) : base(context)
         {
         }
+
+        public override List<ToWatch> Search(ToWatch model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -7,9 +7,10 @@ namespace MyMovies.Repositories.Interfaces
     {
         T Create(T model); 
         T Read(long id);
-        List<T> Search(string title);
+        List<T> Search(T model);
         List<T> ReadAll();
         T Update(T model);
+        T Patch(T model);
         void Delete(long id); 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyMovies.Entities;
 using MyMovies.Repositories.Api.Extensions;
 using MyMovies.Services;
 
@@ -14,33 +15,30 @@ namespace MyMovie.ConsoleApplication
                 .AddJsonFile("appsettings.json", true)
                 .Build();
 
-            var serviceCollection = new ServiceCollection();
+            var loginServiceCollection = new ServiceCollection();
 
-
-
-            serviceCollection
+            loginServiceCollection
                 .AddSingleton(configuration)
-                .AddServices()
-                .AddApiRepository()
-                .AddSingleton<Program>();
+                .AddLoginService()
+                .AddLoginApiRepository();
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var serviceProvider = loginServiceCollection.BuildServiceProvider();
+            var loginService = serviceProvider?.GetService<LoginService>();
 
-            var program = serviceProvider?.GetService<Program>();
+            var authenticationToken = loginService?.Login();
 
-            program?.Execute();
+            var menuServiceCollection = new ServiceCollection();
+            
+            menuServiceCollection
+                .AddSingleton(configuration)
+                .AddSingleton(authenticationToken)
+                .AddMenuService()
+                .AddMoviesApiRepositories();
+
+            serviceProvider = menuServiceCollection.BuildServiceProvider();
+
+            var menuService = serviceProvider?.GetService<MenuService>();
+            menuService?.InitializeMenu();
         }
-
-        private readonly MenuService menuService;
-        
-        public Program(MenuService menuService)
-        {
-            this.menuService = menuService;
-        }
-        public void Execute()
-        {
-           menuService.InitializeMenu();
-        }
-
     }
 }

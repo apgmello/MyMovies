@@ -8,7 +8,7 @@ namespace MyMovies.Repositories.Api
 {
     public class ToWatchRepository : Repository<ToWatch>, IToWatchRepository
     {
-        public ToWatchRepository(IConfigurationRoot configuration) : base(configuration)
+        public ToWatchRepository(IConfigurationRoot configuration, AuthenticationToken authenticationToken) : base(configuration, authenticationToken)
         {
         }
     }

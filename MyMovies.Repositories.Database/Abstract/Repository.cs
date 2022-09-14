@@ -31,6 +31,11 @@ namespace MyMovies.Repositories.Database.Abstract
             context.SaveChanges();
         }
 
+        public T Patch(T model)
+        {
+            return Update(model);
+        }
+
         public T Read(long id)
         {
             return Read(entity => entity.Id == id).FirstOrDefault();
@@ -46,10 +51,7 @@ namespace MyMovies.Repositories.Database.Abstract
             return dbSet.Select(x => x).ToList();
         }
 
-        public List<T> Search(string title)
-        {
-            return Read(x => x.Title.ToLower().Contains(title.ToLower()));
-        }
+        public abstract List<T> Search(T model);
 
         public T Update(T entity)
         {

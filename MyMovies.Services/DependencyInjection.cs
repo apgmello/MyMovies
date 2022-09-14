@@ -4,9 +4,15 @@ namespace MyMovies.Services
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddMenuService(this IServiceCollection services)
         {
             services.AddScoped<MenuService>();
+            return services;
+        }
+
+        public static IServiceCollection AddLoginService(this IServiceCollection services)
+        {
+            services.AddScoped<LoginService>();
             return services;
         }
     }

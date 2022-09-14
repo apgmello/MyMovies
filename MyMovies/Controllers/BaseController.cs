@@ -27,10 +27,10 @@ namespace MyMovies.Api.Controllers
         }
 
         [HttpGet]
-        [Route("search")]
-        public IEnumerable<T> List(string title)
+        [Route("query")]
+        public IEnumerable<T> List([FromBody] T entity)
         {
-            return repository.Search(title);
+            return repository.Search(entity);
         }
 
         [HttpGet]

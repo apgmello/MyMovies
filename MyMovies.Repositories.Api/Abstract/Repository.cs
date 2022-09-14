@@ -1,39 +1,32 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MyMovies.Entities;
 using MyMovies.Repositories.Interfaces;
-using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace MyMovies.Repositories.Api.Abstract
 {
-    public class Repository<TMovie> : IRepository<TMovie> 
+    public class Repository<TMovie> : BaseRepository<TMovie>, IRepository<TMovie>
         where TMovie : Movie
     {
-        private readonly string url;
-        private readonly HttpClient httpClient;
+        private readonly AuthenticationToken _authenticationToken;
 
-        public Repository(IConfigurationRoot configuration)//vem de dentro do container IConfigurationRoot
+        public Repository(IConfigurationRoot configuration, AuthenticationToken authenticationToken) : base(configuration, typeof(TMovie).Name)
         {
-            url = configuration["moviesApiURL"];
-            url = $"{url}/{typeof(TMovie).Name}";
-            httpClient = new HttpClient();
+            _authenticationToken = authenticationToken;
         }
-        private async Task<T> Request<T>(HttpRequestMessage requestMessage)
+        
+        private void AddAuthorizationHeader(HttpRequestMessage httpRequestMessage)
         {
-            var response = await httpClient.SendAsync(requestMessage);
-            var message = await response.Content.ReadAsStringAsync();
-            T result = default;
-            if(message != null)
-                result = JsonConvert.DeserializeObject<T>(message);
-            return result;
+            httpRequestMessage.Headers.Add("Authorization", $"bearer {_authenticationToken.Token}");
         }
-
+        
         public TMovie Create(TMovie entity)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
             {
                 Content = JsonContent.Create(entity)
             };
+            AddAuthorizationHeader(requestMessage);
 
             return Request<TMovie>(requestMessage).Result;
         }
@@ -41,24 +34,21 @@ namespace MyMovies.Repositories.Api.Abstract
         public void Delete(long id)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"{url}?id={id}");
+            AddAuthorizationHeader(requestMessage);
             _ = Request<TMovie>(requestMessage).Result;
         }
 
         public TMovie Read(long id)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}?id={id}");
+            AddAuthorizationHeader(requestMessage);
             return Request<TMovie>(requestMessage).Result;
         }
 
         public List<TMovie> ReadAll()
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}/listAll");
-            return Request<List<TMovie>>(requestMessage).Result;
-        }
-
-        public List<TMovie> Search(string title)
-        {
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}/search?title={title}");
+            AddAuthorizationHeader(requestMessage);
             return Request<List<TMovie>>(requestMessage).Result;
         }
 
@@ -68,8 +58,24 @@ namespace MyMovies.Repositories.Api.Abstract
             {
                 Content = JsonContent.Create(entity)
             };
+            AddAuthorizationHeader(requestMessage);
 
             return Request<TMovie>(requestMessage).Result;
+        }
+
+        public List<TMovie> Search(TMovie model)
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{url}/query")
+            {
+                Content = JsonContent.Create(model)
+            };
+            AddAuthorizationHeader(requestMessage);
+            return Request<List<TMovie>>(requestMessage).Result;
+        }
+
+        public TMovie Patch(TMovie model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

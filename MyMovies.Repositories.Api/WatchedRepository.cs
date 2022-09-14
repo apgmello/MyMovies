@@ -7,7 +7,7 @@ namespace MyMovies.Repositories.Api
 {
     public class WatchedRepository : Repository<Watched>, IWatchedRepository
     {
-        public WatchedRepository(IConfigurationRoot configuration) : base(configuration)
+        public WatchedRepository(IConfigurationRoot configuration, AuthenticationToken authenticationToken) : base(configuration, authenticationToken)
         {
         }
     }
