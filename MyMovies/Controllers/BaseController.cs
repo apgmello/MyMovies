@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyMovies.Api.Filters;
 using MyMovies.Entities;
 using MyMovies.Repositories.Database.Interfaces;
@@ -8,6 +9,7 @@ namespace MyMovies.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public abstract class BaseController<T> : Controller
         where T : Movie
     {
