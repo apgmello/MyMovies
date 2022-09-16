@@ -20,6 +20,11 @@ namespace MyMovies.Api
 
             // Add services to the container.
 
+            builder.Services.AddCors(cors => cors.AddPolicy("AllowOriginAndMethod", options => options
+            .WithOrigins(new[] { "localhost" })
+            .WithMethods(new[] {"*"})
+            ));
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -95,7 +100,6 @@ namespace MyMovies.Api
                 dbContext?.Database.Migrate();
             }
 
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -103,6 +107,7 @@ namespace MyMovies.Api
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("AllowOriginAndMethod");
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
