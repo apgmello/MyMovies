@@ -11,6 +11,7 @@ namespace MyMovies.Repositories.Api.Abstract
     {
         protected readonly string url;
         protected readonly HttpClient httpClient;
+        protected string token;
 
         public BaseRepository(IConfigurationRoot configuration, string controller)
         {
@@ -20,6 +21,9 @@ namespace MyMovies.Repositories.Api.Abstract
         }
         protected async Task<T> Request<T>(HttpRequestMessage requestMessage)
         {
+            if(!string.IsNullOrEmpty(token))
+                requestMessage.Headers.Add("Authorization", $"bearer {token}");
+
             var response = await httpClient.SendAsync(requestMessage);
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

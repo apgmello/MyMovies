@@ -10,16 +10,9 @@ namespace MyMovies.Repositories.Api.Abstract
         where TMovie : Movie
         where TMovieDto : IDto
     {
-        private readonly AuthenticationToken _authenticationToken;
-
         public Repository(IConfigurationRoot configuration, AuthenticationToken authenticationToken) : base(configuration, typeof(TMovie).Name)
         {
-            _authenticationToken = authenticationToken;
-        }
-        
-        private void AddAuthorizationHeader(HttpRequestMessage httpRequestMessage)
-        {
-            httpRequestMessage.Headers.Add("Authorization", $"bearer {_authenticationToken.Token}");
+            token = authenticationToken?.Token;
         }
         
         public TMovie Create(TMovie entity)
@@ -28,29 +21,25 @@ namespace MyMovies.Repositories.Api.Abstract
             {
                 Content = JsonContent.Create(entity)
             };
-            AddAuthorizationHeader(requestMessage);
-
+            
             return Request<TMovie>(requestMessage).Result;
         }
 
         public void Delete(long id)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, $"{url}?id={id}");
-            AddAuthorizationHeader(requestMessage);
             _ = Request<TMovie>(requestMessage).Result;
         }
 
         public TMovie Read(long id)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}?id={id}");
-            AddAuthorizationHeader(requestMessage);
             return Request<TMovie>(requestMessage).Result;
         }
 
         public List<TMovie> ReadAll()
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{url}/listAll");
-            AddAuthorizationHeader(requestMessage);
             return Request<List<TMovie>>(requestMessage).Result;
         }
 
@@ -60,7 +49,6 @@ namespace MyMovies.Repositories.Api.Abstract
             {
                 Content = JsonContent.Create(entity)
             };
-            AddAuthorizationHeader(requestMessage);
 
             return Request<TMovie>(requestMessage).Result;
         }
@@ -71,7 +59,6 @@ namespace MyMovies.Repositories.Api.Abstract
             {
                 Content = JsonContent.Create(model)
             };
-            AddAuthorizationHeader(requestMessage);
             return Request<List<TMovie>>(requestMessage).Result;
         }
 

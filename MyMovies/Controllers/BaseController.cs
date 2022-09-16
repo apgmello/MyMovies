@@ -1,11 +1,9 @@
-﻿using IdentityModel;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyMovies.Api.Filters;
 using MyMovies.Entities;
 using MyMovies.Entities.Dto;
 using MyMovies.Repositories.Database.Interfaces;
-using MyMovies.Repositories.Interfaces;
 
 namespace MyMovies.Api.Controllers
 {
@@ -79,7 +77,6 @@ namespace MyMovies.Api.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [CustomActionFilterEndpoint]
         public async Task<IActionResult> Post(T entity)
         {
             return Ok(repository.Create(entity));
