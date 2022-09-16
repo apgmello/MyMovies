@@ -15,5 +15,10 @@ namespace MyMovies.Entities
         [Required]
         [Display(Name = "Data", Order = 3, Prompt = "dd/mm/aaaa")]
         public DateTime Date { get { return date; } set { date = value; } }
+
+        public override string ToString()
+        {
+            return "{ " + $"{base.ToString()} - {Comment} - {Date:dd/MM/yyyy}" + " }";
+        }
     }
 }

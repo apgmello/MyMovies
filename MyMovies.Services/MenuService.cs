@@ -1,6 +1,7 @@
 ﻿using ConsoleTables;
 using ConsoleTools;
 using MyMovies.Entities;
+using MyMovies.Entities.Dto;
 using MyMovies.Repositories.Api.Interfaces;
 using MyMovies.Repositories.Interfaces;
 using Sharprompt;
@@ -20,18 +21,19 @@ namespace MyMovies.Services
 
         public void InitializeMenu()
         {
-            
+
             var menu = new ConsoleMenu()
-                  .Add("Filmes para assistir", () => SubMenu<ToWatch>("Filmes para assistir", _toWatchRepositoryApi))
-                  .Add("Filmes assistidos", () => SubMenu<Watched>("Filmes assistidos", _watchedRepositoryApi))
+                  .Add("Filmes para assistir", () => SubMenu("Filmes para assistir", _toWatchRepositoryApi))
+                  .Add("Filmes assistidos", () => SubMenu("Filmes assistidos", _watchedRepositoryApi))
                   .Add("Sair", ConsoleMenu.Close)
                   .ConfigureMenu("Selecione uma opção");
 
             menu.Show();
         }
 
-        public void SubMenu<T>(string title, IRepository<T> repository)
+        public void SubMenu<T, TDto>(string title, IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
             var menu = new ConsoleMenu()
                 .Add("Listar", () => List(repository))
@@ -44,8 +46,9 @@ namespace MyMovies.Services
             menu.Show();
         }
 
-        private void List<T>(IRepository<T> repository)
+        private void List<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
             Console.Clear();
             var movies = repository.ReadAll();
@@ -64,8 +67,9 @@ namespace MyMovies.Services
             Console.ReadKey();
         }
 
-        private void RemoveMovie<T>(IRepository<T> repository)
+        private void RemoveMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
             Console.Clear();
             var movies = repository.ReadAll();
@@ -81,22 +85,24 @@ namespace MyMovies.Services
             repository.Delete(movie.Id);
         }
 
-        private void AddMovie<T>(IRepository<T> repository)
+        private void AddMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
-            T movie = (T)Activator.CreateInstance(typeof(T));
+            var movie = Activator.CreateInstance<T>();
             Console.Clear();
             movie = Prompt.Bind(movie);
             repository.Create(movie);
         }
 
-        private void ChangeMovie<T>(IRepository<T> repository)
+        private void ChangeMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
             Console.Clear();
             var movies = repository.ReadAll();
 
-            if (movies.Count == 0)
+            if (movies?.Count == 0 || movies is null)
             {
                 Console.WriteLine("A lista está vazia");
                 Console.ReadKey();
@@ -109,17 +115,21 @@ namespace MyMovies.Services
             movie = Prompt.Bind(movie);
             repository.Update(movie);
         }
-        public void Search<T>(IRepository<T> repository)
+        public void Search<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
+            where TDto : IDto
         {
             Console.Clear();
-            var title = Prompt.Input<string>("Digite o título ou uma parte", validators: new[] { Validators.Required("Valor obrigatório!")});
+            var search = Activator.CreateInstance<TDto>();
+            Console.WriteLine("Entre com os dados para a pesquisa");
+            search = Prompt.Bind(search);
 
-            var movies =  repository.Search(null);
 
-            if (movies.Count == 0)
+            var movies = repository.Search(search);
+
+            if (movies?.Count == 0 || movies is null )
             {
-                Console.WriteLine($"Nenhum filme encontrado com o título: {title}");
+                Console.WriteLine($"Nenhum filme encontrado com os filtros informados");
                 Console.ReadKey();
                 return;
             }

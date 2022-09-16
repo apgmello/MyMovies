@@ -21,6 +21,11 @@ namespace MyMovies.Repositories.Api.Abstract
         protected async Task<T> Request<T>(HttpRequestMessage requestMessage)
         {
             var response = await httpClient.SendAsync(requestMessage);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return default;
+
+
             var message = await response.Content.ReadAsStringAsync();
             T result = default;
             if (message != null)

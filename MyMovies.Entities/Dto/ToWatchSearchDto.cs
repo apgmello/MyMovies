@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MyMovies.Entities.Dto
 {
-    internal class ToWatchSearchDto
+    public class ToWatchSearchDto : IDto
     {
+        private string title = "";
+        private string reason = "";
+
+        [Display(Name = "Título", Order = 1)]
+        public string? Title
+        {
+            get { return title; }
+            set { title = value ?? ""; }
+        }
+
+
+        [Display(Name = "Motivo", Order = 2)]
+        public string? Reason
+        {
+            get { return reason; }
+            set { reason = value ?? ""; }
+        }
     }
 }

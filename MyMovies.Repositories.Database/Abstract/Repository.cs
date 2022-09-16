@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyMovies.Entities;
+using MyMovies.Entities.Dto;
 using MyMovies.Repositories.Database.Context;
 using MyMovies.Repositories.Database.Interfaces;
 using System.Linq.Expressions;
 
 namespace MyMovies.Repositories.Database.Abstract
 {
-    public abstract class Repository<T> : IDatabaseRepository<T>
+    public abstract class Repository<T, TDto> : IDatabaseRepository<T, TDto>
         where T : Movie
+        where TDto : IDto
     {
         private readonly SQLiteContext context;
         private readonly DbSet<T> dbSet;
@@ -43,15 +45,15 @@ namespace MyMovies.Repositories.Database.Abstract
 
         public List<T> Read(Expression<Func<T, bool>> predicate)
         {
-            return dbSet.Where(predicate).ToList();
+            return dbSet.Where(predicate).AsNoTracking().ToList();
         }
 
         public List<T> ReadAll()
         {
-            return dbSet.Select(x => x).ToList();
+            return dbSet.Select(x => x).AsNoTracking().ToList();
         }
 
-        public abstract List<T> Search(T model);
+        public abstract List<T> Search(TDto model);
 
         public T Update(T entity)
         {

@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MyMovies.Entities;
+using MyMovies.Entities.Dto;
 using MyMovies.Repositories.Interfaces;
 using System.Net.Http.Json;
 
 namespace MyMovies.Repositories.Api.Abstract
 {
-    public class Repository<TMovie> : BaseRepository<TMovie>, IRepository<TMovie>
+    public class Repository<TMovie, TMovieDto> : BaseRepository<TMovie>, IRepository<TMovie, TMovieDto>
         where TMovie : Movie
+        where TMovieDto : IDto
     {
         private readonly AuthenticationToken _authenticationToken;
 
@@ -63,7 +65,7 @@ namespace MyMovies.Repositories.Api.Abstract
             return Request<TMovie>(requestMessage).Result;
         }
 
-        public List<TMovie> Search(TMovie model)
+        public List<TMovie> Search(TMovieDto model)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{url}/query")
             {

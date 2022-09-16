@@ -1,19 +1,23 @@
 ﻿using MyMovies.Entities;
+using MyMovies.Entities.Dto;
 using MyMovies.Repositories.Database.Abstract;
 using MyMovies.Repositories.Database.Context;
 
 namespace MyMovies.Repositories.Database
 {
-    public class ToWatchRepository : Repository<ToWatch>
+    public class ToWatchRepository : Repository<ToWatch, ToWatchSearchDto>
 
     {
         public ToWatchRepository(SQLiteContext context) : base(context)
         {
         }
 
-        public override List<ToWatch> Search(ToWatch model)
+        public override List<ToWatch> Search(ToWatchSearchDto model)
         {
-            throw new NotImplementedException();
+            return Read(
+                x =>
+                    (x.Title.ToLower().Contains(model.Title.ToLower()) || model.Title == "") &&
+                    (x.Reason.ToLower().Contains(model.Reason.ToLower()) || model.Reason == ""));
         }
     }
 }

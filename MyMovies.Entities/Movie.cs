@@ -17,5 +17,10 @@ namespace MyMovies.Entities
         [MaxLength(50)]
         [Display(Name = "Título", Order = 1)]
         public string? Title { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Title}";
+        }
     }
 }

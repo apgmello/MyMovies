@@ -10,5 +10,10 @@ namespace MyMovies.Entities
         [MaxLength(150)]
         [Display(Name = "Motivo", Order = 2)]
         public string? Reason { get; set; }
+
+        public override string ToString()
+        {
+            return "{ " + $"{base.ToString()} - {Reason}" + " }";
+        }
     }
 }

@@ -27,6 +27,8 @@ namespace MyMovie.ConsoleApplication
 
             var authenticationToken = loginService?.Login();
 
+            //-------------------------------------------------------------
+
             var menuServiceCollection = new ServiceCollection();
             
             menuServiceCollection
