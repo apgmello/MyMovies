@@ -22,7 +22,7 @@ namespace MyMovies.Api
 
             builder.Services.AddCors(cors => cors.AddPolicy("AllowOriginAndMethod", options => options
             .WithOrigins(new[] { "localhost" })
-            .WithMethods(new[] {"*"})
+            .AllowAnyMethod()
             ));
 
             builder.Services.AddControllers();
