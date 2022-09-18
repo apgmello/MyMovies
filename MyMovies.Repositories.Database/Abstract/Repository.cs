@@ -9,7 +9,7 @@ namespace MyMovies.Repositories.Database.Abstract
 {
     public abstract class Repository<T, TDto> : IDatabaseRepository<T, TDto>
         where T : Movie
-        where TDto : IDto
+        where TDto : Dto
     {
         private readonly SQLiteContext context;
         private readonly DbSet<T> dbSet;

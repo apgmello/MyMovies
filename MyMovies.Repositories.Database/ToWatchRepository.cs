@@ -17,7 +17,8 @@ namespace MyMovies.Repositories.Database
             return Read(
                 x =>
                     (x.Title.ToLower().Contains(model.Title.ToLower()) || model.Title == "") &&
-                    (x.Reason.ToLower().Contains(model.Reason.ToLower()) || model.Reason == ""));
+                    (x.Reason.ToLower().Contains(model.Reason.ToLower()) || model.Reason == ""))
+                    .Skip((model.Page - 1) * model.MaxResults).Take(model.MaxResults).ToList();
         }
     }
 }

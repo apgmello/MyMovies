@@ -12,7 +12,7 @@ namespace MyMovies.Api.Controllers
     [Authorize]
     public abstract class BaseController<T, TDto> : Controller
         where T : Movie
-        where TDto : IDto
+        where TDto : Dto
     {
         private readonly IDatabaseRepository<T, TDto> repository;
 

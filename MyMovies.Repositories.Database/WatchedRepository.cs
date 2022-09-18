@@ -20,8 +20,8 @@ namespace MyMovies.Repositories.Database
                 x =>
                     (x.Title.ToLower().Contains(model.Title.ToLower()) || model.Title == "") &&
                     (x.Comment.ToLower().Contains(model.Comment.ToLower()) || model.Comment == "") &&
-                    ((x.Date.Day == date.Day && x.Date.Month == date.Month && x.Date.Year == date.Year) || date == DateTime.MinValue)
-            );
+                    ((x.Date.Day == date.Day && x.Date.Month == date.Month && x.Date.Year == date.Year) || date == DateTime.MinValue))
+                    .Skip((model.Page - 1) * model.MaxResults).Take(model.MaxResults).ToList();
         }
     }
 }

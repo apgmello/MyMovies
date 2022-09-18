@@ -2,7 +2,7 @@
 
 namespace MyMovies.Entities.Dto
 {
-    public class ToWatchSearchDto : IDto
+    public class ToWatchSearchDto : Dto
     {
         private string title = "";
         private string reason = "";

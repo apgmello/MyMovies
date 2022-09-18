@@ -8,7 +8,7 @@ namespace MyMovies.Repositories.Api.Abstract
 {
     public class Repository<TMovie, TMovieDto> : BaseRepository<TMovie>, IRepository<TMovie, TMovieDto>
         where TMovie : Movie
-        where TMovieDto : IDto
+        where TMovieDto : Dto
     {
         public Repository(IConfigurationRoot configuration, AuthenticationToken authenticationToken) : base(configuration, typeof(TMovie).Name)
         {

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace MyMovies.Entities.Dto
 {
-    public class WatchedSearchDto : IDto
+    public class WatchedSearchDto : Dto
     {
         private string title = "";
         private string comment = "";

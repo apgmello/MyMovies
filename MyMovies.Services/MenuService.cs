@@ -33,7 +33,7 @@ namespace MyMovies.Services
 
         public void SubMenu<T, TDto>(string title, IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             var menu = new ConsoleMenu()
                 .Add("Listar", () => List(repository))
@@ -48,7 +48,7 @@ namespace MyMovies.Services
 
         private void List<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             Console.Clear();
             var movies = repository.ReadAll();
@@ -69,7 +69,7 @@ namespace MyMovies.Services
 
         private void RemoveMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             Console.Clear();
             var movies = repository.ReadAll();
@@ -87,7 +87,7 @@ namespace MyMovies.Services
 
         private void AddMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             var movie = Activator.CreateInstance<T>();
             Console.Clear();
@@ -97,7 +97,7 @@ namespace MyMovies.Services
 
         private void ChangeMovie<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             Console.Clear();
             var movies = repository.ReadAll();
@@ -117,26 +117,41 @@ namespace MyMovies.Services
         }
         public void Search<T, TDto>(IRepository<T, TDto> repository)
             where T : Movie
-            where TDto : IDto
+            where TDto : Dto
         {
             Console.Clear();
             var search = Activator.CreateInstance<TDto>();
             Console.WriteLine("Entre com os dados para a pesquisa");
             search = Prompt.Bind(search);
+            search.Page = 1;
+            search.MaxResults = 5;
 
-
-            var movies = repository.Search(search);
-
-            if (movies?.Count == 0 || movies is null )
+            List<T> movies;
+            do
             {
-                Console.WriteLine($"Nenhum filme encontrado com os filtros informados");
-                Console.ReadKey();
-                return;
-            }
+                movies = repository.Search(search);
 
-            ConsoleTable
-                .From(movies)
-                .Write(Format.Minimal);
+                if (movies?.Count == 0 || movies is null)
+                {
+                    if (search.Page == 1)
+                    {
+                        Console.WriteLine($"Nenhum filme encontrado com os filtros informados");
+                        Console.ReadKey();
+                    }
+                    return;
+                }
+                Console.Clear();
+                ConsoleTable
+                    .From(movies)
+                    .Write(Format.Minimal);
+
+                if (movies.Count == search.MaxResults)
+                {
+                    search.Page++;
+                    Console.WriteLine("Pressione uma tecla");
+                    Console.ReadKey();
+                }
+            } while (movies.Count == search.MaxResults);
 
             Console.ReadKey();
         }

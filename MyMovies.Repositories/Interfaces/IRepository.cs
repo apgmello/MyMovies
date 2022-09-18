@@ -5,7 +5,7 @@ namespace MyMovies.Repositories.Interfaces
 {
     public interface IRepository<TMovie, TMovieDto>
         where TMovie : Movie
-        where TMovieDto : IDto
+        where TMovieDto : Dto
     {
         TMovie Create(TMovie model); 
         TMovie Read(long id);
